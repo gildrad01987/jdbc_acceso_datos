@@ -116,6 +116,7 @@ public class ConPERSONA {
             
             registro= pstmt.executeUpdate();
             
+            
             if (registro>0) {
                 respuesta=true;
             }
