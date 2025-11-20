@@ -4,7 +4,11 @@
  */
 package com.mycompany.practicajdbc;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -47,9 +51,15 @@ public class Consultas extends javax.swing.JFrame {
         txtJoin = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
         txtGroupBy = new javax.swing.JTextArea();
-        btnLike = new javax.swing.JButton();
+        btnSelect = new javax.swing.JButton();
         btnJoin = new javax.swing.JButton();
         btnGroupBy = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        txtSelect = new javax.swing.JTextArea();
+        btnLike = new javax.swing.JButton();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        tblResultados = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -65,6 +75,8 @@ public class Consultas extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Trebuchet MS", 1, 24)); // NOI18N
         jLabel2.setText("LIKE");
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 10, 0);
         jPanel2.add(jLabel2, gridBagConstraints);
@@ -73,7 +85,7 @@ public class Consultas extends javax.swing.JFrame {
         jLabel3.setText("JOIN");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 10, 0);
         jPanel2.add(jLabel3, gridBagConstraints);
@@ -82,7 +94,7 @@ public class Consultas extends javax.swing.JFrame {
         jLabel4.setText("GROUP BY");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 7;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 10, 0);
         jPanel2.add(jLabel4, gridBagConstraints);
@@ -94,7 +106,7 @@ public class Consultas extends javax.swing.JFrame {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 10, 0);
         jPanel2.add(jScrollPane1, gridBagConstraints);
 
@@ -105,7 +117,7 @@ public class Consultas extends javax.swing.JFrame {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 10, 0);
         jPanel2.add(jScrollPane2, gridBagConstraints);
 
@@ -116,17 +128,17 @@ public class Consultas extends javax.swing.JFrame {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridy = 9;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 10, 0);
         jPanel2.add(jScrollPane3, gridBagConstraints);
 
-        btnLike.setBackground(new java.awt.Color(51, 204, 0));
-        btnLike.setFont(new java.awt.Font("Trebuchet MS", 1, 18)); // NOI18N
-        btnLike.setText("EJECUTAR");
-        btnLike.setPreferredSize(new java.awt.Dimension(130, 18));
-        btnLike.addActionListener(new java.awt.event.ActionListener() {
+        btnSelect.setBackground(new java.awt.Color(51, 204, 0));
+        btnSelect.setFont(new java.awt.Font("Trebuchet MS", 1, 18)); // NOI18N
+        btnSelect.setText("EJECUTAR");
+        btnSelect.setPreferredSize(new java.awt.Dimension(130, 18));
+        btnSelect.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLikeActionPerformed(evt);
+                btnSelectActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -134,7 +146,7 @@ public class Consultas extends javax.swing.JFrame {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(15, 45, 15, 45);
-        jPanel2.add(btnLike, gridBagConstraints);
+        jPanel2.add(btnSelect, gridBagConstraints);
 
         btnJoin.setBackground(new java.awt.Color(51, 204, 0));
         btnJoin.setFont(new java.awt.Font("Trebuchet MS", 1, 18)); // NOI18N
@@ -147,7 +159,7 @@ public class Consultas extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(15, 45, 15, 45);
         jPanel2.add(btnJoin, gridBagConstraints);
@@ -162,10 +174,66 @@ public class Consultas extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridy = 9;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(20, 45, 20, 45);
         jPanel2.add(btnGroupBy, gridBagConstraints);
+
+        jLabel5.setFont(new java.awt.Font("Trebuchet MS", 1, 24)); // NOI18N
+        jLabel5.setText("SELECT");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 10, 0);
+        jPanel2.add(jLabel5, gridBagConstraints);
+
+        txtSelect.setColumns(20);
+        txtSelect.setRows(5);
+        txtSelect.setText("SELECT columnas\nFROM nombre_tabla;\n");
+        jScrollPane4.setViewportView(txtSelect);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 10, 0);
+        jPanel2.add(jScrollPane4, gridBagConstraints);
+
+        btnLike.setBackground(new java.awt.Color(51, 204, 0));
+        btnLike.setFont(new java.awt.Font("Trebuchet MS", 1, 18)); // NOI18N
+        btnLike.setText("EJECUTAR");
+        btnLike.setPreferredSize(new java.awt.Dimension(130, 18));
+        btnLike.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLikeActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(15, 45, 15, 45);
+        jPanel2.add(btnLike, gridBagConstraints);
+
+        jScrollPane6.setPreferredSize(new java.awt.Dimension(452, 100));
+
+        tblResultados.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane6.setViewportView(tblResultados);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridheight = 9;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        jPanel2.add(jScrollPane6, gridBagConstraints);
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.CENTER);
 
@@ -173,31 +241,27 @@ public class Consultas extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 717, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1048, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 617, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 858, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnLikeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLikeActionPerformed
+    private void btnSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectActionPerformed
         // TODO add your handling code here:
 
-        String resultado = txtLike.getText();
+        ejecutarConsulta(txtSelect.getText());
 
-        JOptionPane.showMessageDialog(this, resultado, "Consulta realizada", JOptionPane.INFORMATION_MESSAGE );
-
-    }//GEN-LAST:event_btnLikeActionPerformed
+    }//GEN-LAST:event_btnSelectActionPerformed
 
     private void btnJoinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJoinActionPerformed
         // TODO add your handling code here:
 
-        String resultado = txtJoin.getText();
-
-        JOptionPane.showMessageDialog(this, resultado, "Consulta realizada", JOptionPane.INFORMATION_MESSAGE );
+        ejecutarConsulta(txtJoin.getText());
     }//GEN-LAST:event_btnJoinActionPerformed
 
     private void btnGroupByActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGroupByActionPerformed
@@ -205,14 +269,55 @@ public class Consultas extends javax.swing.JFrame {
         
         
              
-        String resultado = txtGroupBy.getText();
-
-        JOptionPane.showMessageDialog(this, resultado, "Consulta realizada", JOptionPane.INFORMATION_MESSAGE );
+        ejecutarConsulta(txtGroupBy.getText());
    
     
         
     }//GEN-LAST:event_btnGroupByActionPerformed
 
+    private void btnLikeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLikeActionPerformed
+        // TODO add your handling code here:
+        
+                ejecutarConsulta(txtLike.getText());
+
+        
+    }//GEN-LAST:event_btnLikeActionPerformed
+
+    
+    private void ejecutarConsulta(String consulta) {
+    try (Connection con = ConexionBD.getConexion();
+         Statement st = con.createStatement();
+         ResultSet rs = st.executeQuery(consulta)) {
+
+        // Crear el modelo de la tabla dinámicamente
+        java.sql.ResultSetMetaData meta = rs.getMetaData();
+        int columnas = meta.getColumnCount();
+        DefaultTableModel model = new DefaultTableModel();
+        
+        // Agregar nombres de columnas
+        for (int i = 1; i <= columnas; i++) {
+            model.addColumn(meta.getColumnName(i));
+        }
+        
+        // Agregar filas
+        while (rs.next()) {
+            Object[] fila = new Object[columnas];
+            for (int i = 0; i < columnas; i++) {
+                fila[i] = rs.getObject(i + 1);
+            }
+            model.addRow(fila);
+        }
+        
+        tblResultados.setModel(model); // Mostrar en JTable
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), 
+            "Consulta fallida", JOptionPane.ERROR_MESSAGE);
+    }
+}
+
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -242,17 +347,23 @@ public class Consultas extends javax.swing.JFrame {
     private javax.swing.JButton btnGroupBy;
     private javax.swing.JButton btnJoin;
     private javax.swing.JButton btnLike;
+    private javax.swing.JButton btnSelect;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JTable tblResultados;
     private javax.swing.JTextArea txtGroupBy;
     private javax.swing.JTextArea txtJoin;
     private javax.swing.JTextArea txtLike;
+    private javax.swing.JTextArea txtSelect;
     // End of variables declaration//GEN-END:variables
 }
