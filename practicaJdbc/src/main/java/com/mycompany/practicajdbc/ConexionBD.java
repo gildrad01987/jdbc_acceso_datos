@@ -11,7 +11,7 @@ public class ConexionBD {
     private static Connection conexion = null;
     private static final String URL = "jdbc:mysql://localhost:3306/accesoadatos"; // Reemplazar
     private static final String USUARIO = "root"; // Reemplazar
-    private static final String CONTRASENA = "YEKA1987"; // Reemplazar
+    private static final String CONTRASENA = ""; // Reemplazar
 
     
     
