@@ -14,28 +14,33 @@ public class PracticaJdbc {
 
     public static void main(String[] args) throws SQLException {
          Persona persona=new Persona();
-         persona.setTipoDoc("DNI");
-         persona.setNroDocumento("12345678A");
-         persona.setNombres("gildardo aguirre");
-         persona.setApellidos("RIOS AGUIRRE");
+         persona.setTipoDoc("PAS");
+         persona.setNroDocumento("11111c");
+         persona.setNombres("geeeeee aguirre");
+         persona.setApellidos("eeeeeeGUIRRE");
          persona.setEmailPersonal("persaonal.com");
          persona.setEmailInstitucional("institucional@gmail.ocm");
+         persona.setTipoPersona("EST");
          
          //if (persona.existe("DNI","12345678A" )==null) {
          ConPERSONA cpersona= new ConPERSONA();
-         cpersona.insertarPersona(persona);
+         if (cpersona.insertarPersona(persona)) {
+             System.out.println("creada correctamente");
+        }
+         
          for (Persona pe : cpersona.traerTodos()) {
-             System.out.println(" - :   "+pe.getEmailInstitucional());
+             System.out.println(" - :   "+pe.getNroDocumento());
         }
          persona.setEmailInstitucional("ultima prueba.com");
          cpersona.modificarPersona(persona);
-         for (Persona pe : cpersona.traerTodos()) {
-             System.out.println(" - :   "+pe);
+         
+         for (Persona pe : cpersona.traerPorId(persona.getTipoDoc(), persona.getNroDocumento())) {
+             System.out.println("consultada por id - :   "+pe.toString());
         }
          
          cpersona.eliminarPersona(persona);
          for (Persona pe : cpersona.traerTodos()) {
-             System.out.println(" - :   "+pe);
+             System.out.println(" validar si existe - :   "+pe);
         }
          
          System.out.println("---------------------------------------------");

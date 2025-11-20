@@ -243,6 +243,7 @@ public class DML extends javax.swing.JFrame {
         String resultado = txtUpdate.getText();
         
         JOptionPane.showMessageDialog(this, resultado, "Consulta realizada", JOptionPane.INFORMATION_MESSAGE );
+        
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed

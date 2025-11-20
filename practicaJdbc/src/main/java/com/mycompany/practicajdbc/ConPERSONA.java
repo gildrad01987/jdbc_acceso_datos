@@ -4,10 +4,13 @@
  */
 package com.mycompany.practicajdbc;
 
+import com.mycompany.practicajdbc.ConexionBD;
+import com.mycompany.practicajdbc.Persona;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
@@ -17,47 +20,41 @@ import java.util.ArrayList;
 public class ConPERSONA {
 
     public ConPERSONA() {
+        
     }
     private final PersonaBD bd = new PersonaBD();
     
-        public ArrayList<Persona> traerTodos() {
+        public ArrayList<Persona> traerTodos() throws SQLException  {
             ArrayList<Persona> resultado= new ArrayList<>();
             boolean respuesta=false;
             String sql = "select * from personas;";
             Connection conn = ConexionBD.getConexion();
             ResultSet rs;
-            try (
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                rs= pstmt.executeQuery();
-                    while (rs.next()) {
-                        Persona p= new Persona();
-                        p.setNroDocumento(rs.getString("nroDocumento"));
-                        p.setTipoDoc(rs.getString("tipo_doc"));
-                        p.setNombres(rs.getString("nombres"));
-                        p.setApellidos(rs.getString("apellidos"));
-                        p.setEmailPersonal(rs.getString("emailPersonal"));
-                        p.setEmailInstitucional(rs.getString("emailInstitucional"));
-                        //System.out.println("inser--- "+p);
-                        resultado.add(p);
-                    
-                }
-                    
+              Statement sentence=conn.createStatement(); 
+//                //PreparedStatement pstmt = conn.prepareStatement(sql)) {
+//                //rs= pstmt.executeQuery();
+                rs = sentence.executeQuery(sql);
+                
+                while (rs.next()) {
+                          Persona p= new Persona();
+                          p.setNroDocumento(rs.getString("nroDocumento"));
+                          p.setTipoDoc(rs.getString("tipo_doc"));
+                          p.setNombres(rs.getString("nombres"));
+                          p.setApellidos(rs.getString("apellidos"));
+                          p.setEmailPersonal(rs.getString("emailPersonal"));
+                          p.setEmailInstitucional(rs.getString("emailInstitucional"));
+                          //System.out.println("inser--- "+p);
+                          resultado.add(p);
 
-                System.out.println(">>>>>   "+resultado.size());
-                if (rs!=null) {
-                    rs.close();
-                    conn.close();
-                }
-
-            } catch (SQLException ex) {
-                //System.out.println(""+ex);
-                System.out.println("Fallo en consulta bd: "+ex);
-            }finally{
-
-            }
-            return resultado;
-
+                  }
+                
+                        rs.close();
+                        conn.close();
+                    return resultado;
         }
+            
+
+        
 
         public ArrayList<Persona> traerPorId(String tipoDni,String dni) {
             ArrayList<Persona> resultado= new ArrayList<>();

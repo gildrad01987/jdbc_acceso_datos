@@ -5,13 +5,18 @@
 package com.mycompany.practicajdbc;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class ConexionBD {
     private static Connection conexion = null;
-    private static final String URL = "jdbc:mysql://localhost:3306/accesoadatos"; // Reemplazar
+    private static final String URL = "jdbc:mysql://localhost:3306/ACCESOADATOS"; // Reemplazar
     private static final String USUARIO = "root"; // Reemplazar
-    private static final String CONTRASENA = ""; // Reemplazar
+    private static final String CONTRASENA = "YEKA1987"; // Reemplazar
 
     
     
@@ -40,4 +45,38 @@ public class ConexionBD {
             }
         }
     }
+    
+    public static ArrayList<Object> ejecutarConsulta(String consulta) {
+         ArrayList<Object> resultado=null;
+    try (Connection con = ConexionBD.getConexion();
+         Statement st = con.createStatement();
+         ResultSet rs= st.executeQuery(consulta)) {
+        while (rs.next()) { 
+            resultado.add((Object) rs.next()) ;
+            }
+        rs.close();
+        con.close();
+    } catch (Exception e) {
+        System.out.println( "Error: ejecutarconsulta...." + e.getMessage());
+    }finally{
+        
+    }
+            return resultado;
+}
+    public static int ejecutarModificacion(String consulta) {
+         int resultado=0;
+         int registros=-1; 
+    try (Connection con = ConexionBD.getConexion();
+         Statement st = con.createStatement();
+             ) {
+            registros= st.executeUpdate(consulta);
+            
+    } catch (SQLException e) {
+        System.out.println( "Error: ejecutarUpdate...." + e.getMessage());
+    }finally{
+        
+    }
+            return resultado;
+}
+    
 }

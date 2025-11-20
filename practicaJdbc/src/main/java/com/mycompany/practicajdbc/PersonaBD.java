@@ -16,42 +16,32 @@ import java.util.ArrayList;
  * @author gilda
  */
 public class PersonaBD {
-    
+        public  ConexionBD bd;
     
 
         public ArrayList<Persona> traerPorId(String tipoDni,String dni) {
-            ArrayList<Persona> resultado= new ArrayList<>();
-            boolean respuesta=false;
-            String sql = "select * from personas where tipo_doc= ? and nroDocumento = ?;";
-            Connection conn = ConexionBD.getConexion();
-            ResultSet rs;
-            try (
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(1, tipoDni);
-                pstmt.setString(2, dni);
-                rs= pstmt.executeQuery();
+            String sql = "select * from personas where tipo_doc="+tipoDni+"  and nroDocumento = "+dni+";";
+            ArrayList<Persona> resultado= new ArrayList<Persona>();
+            ArrayList<Object> res= bd.ejecutarConsulta(sql);
+            
+            for (Object re : res) {
+                resultado.add((Persona) re);
                 
-                    Persona p= new Persona();
-                    p.setNroDocumento(rs.getString("nroDocumento"));
-                    p.setNroDocumento(rs.getString("tipo_doc"));
-                    p.setNroDocumento(rs.getString("nombres"));
-                    p.setNroDocumento(rs.getString("apellidos"));
-                    p.setNroDocumento(rs.getString("emailPersonal"));
-                    p.setNroDocumento(rs.getString("emailInstitucional"));
-                    resultado.add(p);
-
-                System.out.println(">>>>>   "+resultado.size());
-                if (rs!=null) {
-                    rs.close();
-                    conn.close();
-                }
-
-            } catch (SQLException ex) {
-                //System.out.println(""+ex);
-                System.out.println("Fallo en consulta bd: "+ex);
-            }finally{
-
             }
+            
+            return resultado;
+
+        }
+        public ArrayList<Persona> traerTodos() {
+            String sql = "select * from personas ;";
+            ArrayList<Persona> resultado= new ArrayList<Persona>();
+            ArrayList<Object> res= bd.ejecutarConsulta(sql);
+            
+            for (Object re : res) {
+                resultado.add((Persona) re);
+                
+            }
+            
             return resultado;
 
         }
@@ -60,35 +50,50 @@ public class PersonaBD {
         
         boolean respuesta=false;
         
-        String sql = "update personas set nombres=?, apellidos=?,emailPersonal=?, emailInstitucional=? where "
-          + "tipo_doc=? and nroDocumento=?";
-        Connection conn = ConexionBD.getConexion();
-        int registro=0;
-        
-        try (
-            PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, person.getNombres());
-            pstmt.setString(2, person.getApellidos());
-            pstmt.setString(3, person.getEmailPersonal());
-            pstmt.setString(4, person.getEmailInstitucional());
-            pstmt.setString(5, person.getTipoDoc());
-            pstmt.setString(6, person.getNroDocumento());
-            
-            registro= pstmt.executeUpdate();
-            
-            if (registro>0) {
-                respuesta=true;
-            }
-                        
-        } catch (SQLException ex) {
-            //System.out.println(""+ex);
-            System.out.println("Fallo en consulta bd: "+ex);
-        }finally{
-            conn.close();
+        String sql = "update personas set nombres= '"+person.getNombres()+ 
+          "', apellidos='"+person.getApellidos()+
+          "', emailPersonal='"+person.getEmailPersonal()+"', emailInstitucional='"+person.getEmailInstitucional()+ "' where "
+          + "tipo_doc='"+person.getTipoDoc()+"' and nroDocumento='"+person.getNroDocumento()+"';";
+        if (bd.ejecutarModificacion(sql)>0) {
+            respuesta=true;
         }
+  
+        
         return respuesta;
         
     }
-    
+
+    public boolean insertarPersona(Persona person) throws SQLException {
+        
+        boolean respuesta=false;
+        
+         String sql = "update personas set nombres= '"+person.getNombres()+ 
+          "', apellidos='"+person.getApellidos()+
+          "', emailPersonal='"+person.getEmailPersonal()+"', emailInstitucional='"+person.getEmailInstitucional()+ "' where "
+          + "tipo_doc='"+person.getTipoDoc()+"' and nroDocumento='"+person.getNroDocumento()+"';";
+        if (bd.ejecutarModificacion(sql)>0) {
+            respuesta=true;
+        }
+  
+        
+        return respuesta;
+        
+    }
+
+    public boolean eliminarPersona(Persona person) throws SQLException {
+        
+        boolean respuesta=false;
+        
+         String sql = "delete from personas  where "
+          + "tipo_doc='"+person.getTipoDoc()+
+           "' and nroDocumento='"+person.getNroDocumento()+"';";
+        if (bd.ejecutarModificacion(sql)>0) {
+            respuesta=true;
+        }
+  
+        return respuesta;
+        
+    }
+
     
 }
